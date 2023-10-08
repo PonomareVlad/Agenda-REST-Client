@@ -3,6 +3,8 @@ import {getURL} from "vercel-grammy";
 export const {
     AGENDA_API_URL,
     AGENDA_API_KEY,
+    AGENDA_RUN_PATH = "api/task/run",
+    AGENDA_CALLBACK_PATH = "api/task/callback",
 } = process.env;
 
 export const agendaHeaders = (headers = {}) => ({
@@ -30,15 +32,15 @@ export const fetchAgenda = (path, {
     return result;
 });
 
-export async function createAgendaJob(name) {
+export async function createAgendaJob(name, runPath = AGENDA_RUN_PATH, callbackPath = AGENDA_CALLBACK_PATH) {
     const body = {
         name,
         url: getURL({
-            path: `api/task/run`
+            path: runPath
         }),
         callback: {
             url: getURL({
-                path: `api/task/result`
+                path: callbackPath
             }),
         }
     }
